@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>夜の民カード図鑑</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Noto+Serif+JP:wght@300;400;600&family=Shippori+Mincho:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --night: #0a0a1a;
+    --deep: #0f0f2e;
+    --card-bg: #12122a;
+    --gold: #c9a84c;
+    --gold-light: #f0d080;
+    --silver: #a8b8d8;
+    --moon: #e8e0c8;
+    --glow-blue: #4488ff;
+    --glow-purple: #9944ff;
+    --glow-teal: #44ddcc;
+    --glow-pink: #ff6699;
+    --glow-gold: #ffcc44;
+    --text-main: #d8d0c0;
+    --text-dim: #8878a0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--night);
+    color: var(--text-main);
+    font-family: 'Noto Serif JP', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* starfield background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 50% 70%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 10% 80%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 50%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 15%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 65% 85%, rgba(200,180,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 55%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 75% 40%, rgba(200,220,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 45% 95%, rgba(255,255,255,0.4) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  header {
+    text-align: center;
+    padding: 3rem 0 2.5rem;
+  }
+
+  header h1 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(1.4rem, 4vw, 2.2rem);
+    color: var(--gold-light);
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 30px rgba(200,160,60,0.5), 0 0 60px rgba(200,160,60,0.2);
+    margin-bottom: 0.5rem;
+  }
+
+  header p {
+    font-family: 'Shippori Mincho', serif;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+  }
+
+  /* Quiz section */
+  .quiz-section {
+    background: linear-gradient(135deg, rgba(20,20,50,0.8), rgba(15,15,40,0.9));
+    border: 1px solid rgba(200,168,76,0.2);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2.5rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 40px rgba(0,0,0,0.5), inset 0 0 40px rgba(100,80,200,0.03);
+  }
+
+  .quiz-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1rem;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .question-block {
+    margin-bottom: 1.5rem;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .question-text {
+    font-size: 0.95rem;
+    color: var(--moon);
+    margin-bottom: 0.8rem;
+    line-height: 1.7;
+  }
+
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .option-btn {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(200,168,76,0.25);
+    color: var(--text-main);
+    font-family: 'Shippori Mincho', serif;
+    font-size: 0.85rem;
+    padding: 0.5rem 1.1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    letter-spacing: 0.05em;
+  }
+
+  .option-btn:hover {
+    background: rgba(200,168,76,0.12);
+    border-color: var(--gold);
+    color: var(--gold-light);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(200,168,76,0.15);
+  }
+
+  .option-btn.selected {
+    background: rgba(200,168,76,0.18);
+    border-color: var(--gold-light);
+    color: var(--gold-light);
+    box-shadow: 0 0 12px rgba(200,168,76,0.2);
+  }
+
+  .generate-btn {
+    display: block;
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 0.9rem;
+    background: linear-gradient(135deg, rgba(200,168,76,0.15), rgba(200,168,76,0.08));
+    border: 1px solid var(--gold);
+    color: var(--gold-light);
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.15em;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .generate-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, rgba(200,168,76,0.3), rgba(200,168,76,0.15));
+    box-shadow: 0 0 25px rgba(200,168,76,0.3);
+    transform: translateY(-1px);
+  }
+
+  .generate-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* Loading */
+  .loading {
+    text-align: center;
+    padding: 2rem;
+    display: none;
+  }
+
+  .loading.active { display: block; }
+
+  .moon-spinner {
+    font-size: 2.5rem;
+    display: inline-block;
+    animation: moonSpin 1.5s linear infinite;
+  }
+
+  @keyframes moonSpin {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.2); }
+    100% { transform: rotate(360deg) scale(1); }
+  }
+
+  .loading p {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin-top: 0.8rem;
+    letter-spacing: 0.1em;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  /* Card */
+  .card-wrapper {
+    display: none;
+    animation: cardReveal 0.8s ease forwards;
+  }
+
+  .card-wrapper.visible { display: block; }
+
+  @keyframes cardReveal {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .card {
+    width: min(340px, 90vw);
+    margin: 0 auto 2rem;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(200,168,76,0.3);
+  }
+
+  .card-inner {
+    background: linear-gradient(160deg, #0e0e28 0%, #181836 40%, #0e0e28 100%);
+    padding: 1.5rem 1.3rem 1.3rem;
+    position: relative;
+    min-height: 480px;
+  }
+
+  .card-border-glow {
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    pointer-events: none;
+    border: 2px solid transparent;
+    background: linear-gradient(#0e0e28, #0e0e28) padding-box,
+                var(--card-gradient) border-box;
+  }
+
+  .card-corner {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    opacity: 0.6;
+  }
+  .card-corner.tl { top: 8px; left: 8px; border-top: 1.5px solid var(--gold); border-left: 1.5px solid var(--gold); }
+  .card-corner.tr { top: 8px; right: 8px; border-top: 1.5px solid var(--gold); border-right: 1.5px solid var(--gold); }
+  .card-corner.bl { bottom: 8px; left: 8px; border-bottom: 1.5px solid var(--gold); border-left: 1.5px solid var(--gold); }
+  .card-corner.br { bottom: 8px; right: 8px; border-bottom: 1.5px solid var(--gold); border-right: 1.5px solid var(--gold); }
+
+  .card-number {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.4rem;
+  }
+
+  .card-name {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.3rem;
+    color: var(--gold-light);
+    text-shadow: 0 0 20px currentColor;
+    margin-bottom: 0.2rem;
+    letter-spacing: 0.05em;
+  }
+
+  .card-name-jp {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.8rem;
+  }
+
+  .type-badges {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 0.9rem;
+    flex-wrap: wrap;
+  }
+
+  .type-badge {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.7rem;
+    border-radius: 10px;
+    font-family: 'Shippori Mincho', serif;
+    letter-spacing: 0.1em;
+    border: 1px solid currentColor;
+  }
+
+  /* Art area */
+  .card-art {
+    width: 100%;
+    height: 160px;
+    border-radius: 10px;
+    margin-bottom: 0.9rem;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card-art canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .card-emoji {
+    font-size: 4rem;
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 0 20px currentColor);
+    animation: floatEmoji 3s ease-in-out infinite;
+  }
+
+  @keyframes floatEmoji {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .card-classification {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.7rem;
+    font-family: 'Shippori Mincho', serif;
+  }
+
+  .card-trait {
+    font-size: 0.78rem;
+    color: var(--text-main);
+    line-height: 1.7;
+    margin-bottom: 0.8rem;
+    font-family: 'Shippori Mincho', serif;
+    border-left: 2px solid rgba(200,168,76,0.3);
+    padding-left: 0.7rem;
+  }
+
+  .card-moves {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .move-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    font-family: 'Shippori Mincho', serif;
+  }
+
+  .move-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .move-name {
+    color: var(--gold-light);
+    font-weight: 600;
+    min-width: 100px;
+  }
+
+  .move-desc {
+    color: var(--text-dim);
+  }
+
+  .evolution-hint {
+    background: rgba(200,168,76,0.06);
+    border: 1px solid rgba(200,168,76,0.15);
+    border-radius: 8px;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    font-family: 'Shippori Mincho', serif;
+    line-height: 1.6;
+  }
+
+  .evolution-hint span {
+    color: var(--gold);
+  }
+
+  /* Detail section below card */
+  .card-detail {
+    background: linear-gradient(135deg, rgba(20,20,50,0.8), rgba(15,15,40,0.9));
+    border: 1px solid rgba(200,168,76,0.15);
+    border-radius: 16px;
+    padding: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .detail-section {
+    margin-bottom: 1.3rem;
+  }
+
+  .detail-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.65rem;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.7rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid rgba(200,168,76,0.15);
+  }
+
+  .detail-text {
+    font-size: 0.85rem;
+    line-height: 1.9;
+    color: var(--text-main);
+    font-family: 'Shippori Mincho', serif;
+  }
+
+  .evolution-line {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .evo-stage {
+    text-align: center;
+    flex: 1;
+    min-width: 80px;
+  }
+
+  .evo-emoji { font-size: 1.8rem; display: block; margin-bottom: 0.3rem; }
+  .evo-name {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 0.7rem;
+    color: var(--gold-light);
+  }
+  .evo-stage-label {
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    display: block;
+    margin-top: 0.15rem;
+  }
+
+  .evo-arrow {
+    color: var(--gold);
+    opacity: 0.5;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .retry-btn {
+    display: block;
+    width: min(340px, 90vw);
+    margin: 0 auto;
+    padding: 0.8rem;
+    background: transparent;
+    border: 1px solid rgba(200,168,76,0.3);
+    color: var(--text-dim);
+    font-family: 'Shippori Mincho', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .retry-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold-light);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🌙 夜の民図鑑</h1>
+    <p>あなたの特性を知ろう</p>
+  </header>
+
+  <div class="quiz-section" id="quizSection">
+    <div class="quiz-title">🔮 ３つだけ、こたえてね</div>
+
+    <div class="question-block">
+      <div class="question-text">① いま、気分に近いのはどれ？</div>
+      <div class="options" id="q1">
+        <button class="option-btn" data-q="1" data-v="しずかな">しずかな</button>
+        <button class="option-btn" data-q="1" data-v="きらきら">きらきら</button>
+        <button class="option-btn" data-q="1" data-v="ねむたい">ねむたい</button>
+        <button class="option-btn" data-q="1" data-v="ひらめき">ひらめき</button>
+        <button class="option-btn" data-q="1" data-v="ふわふわ">ふわふわ</button>
+        <button class="option-btn" data-q="1" data-v="どきどき">どきどき</button>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <div class="question-text">② 安心するのはどの時間？</div>
+      <div class="options" id="q2">
+        <button class="option-btn" data-q="2" data-v="深夜ひとりの時間">深夜ひとり</button>
+        <button class="option-btn" data-q="2" data-v="夕暮れ">夕暮れ</button>
+        <button class="option-btn" data-q="2" data-v="雨の日">雨の日</button>
+        <button class="option-btn" data-q="2" data-v="曇りの昼">曇りの昼</button>
+        <button class="option-btn" data-q="2" data-v="夜明け前">夜明け前</button>
+        <button class="option-btn" data-q="2" data-v="いつでも">いつでも</button>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <div class="question-text">③ 好きなもの、１つだけ言ってみて</div>
+      <div class="options" id="q3">
+        <button class="option-btn" data-q="3" data-v="水・海・川">水・海・川</button>
+        <button class="option-btn" data-q="3" data-v="ゲーム・謎解き">ゲーム・謎解き</button>
+        <button class="option-btn" data-q="3" data-v="夜空・星">夜空・星</button>
+        <button class="option-btn" data-q="3" data-v="音楽・音">音楽・音</button>
+        <button class="option-btn" data-q="3" data-v="物語・空想">物語・空想</button>
+        <button class="option-btn" data-q="3" data-v="動物・自然">動物・自然</button>
+      </div>
+    </div>
+
+    <button class="generate-btn" id="generateBtn" disabled>🌙 カードをひらく</button>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="moon-spinner">🌙</div>
+    <p id="loadingMsg">夜の民の記録を探しています…</p>
+  </div>
+
+  <div class="card-wrapper" id="cardWrapper">
+    <div class="card" id="mainCard">
+      <div class="card-inner" id="cardInner">
+        <div class="card-corner tl"></div>
+        <div class="card-corner tr"></div>
+        <div class="card-corner bl"></div>
+        <div class="card-corner br"></div>
+        <div class="card-number" id="cardNumber">No.???</div>
+        <div class="card-name" id="cardName">???</div>
+        <div class="card-name-jp" id="cardNameJp">loading...</div>
+        <div class="type-badges" id="typeBadges"></div>
+        <div class="card-art" id="cardArt">
+          <canvas id="artCanvas"></canvas>
+          <div class="card-emoji" id="cardEmoji">🌙</div>
+        </div>
+        <div class="card-classification" id="cardClassification">▶ ???のポケモン</div>
+        <div class="card-trait" id="cardTrait">...</div>
+        <div class="card-moves" id="cardMoves"></div>
+        <div class="evolution-hint" id="evolutionHint">...</div>
+      </div>
+    </div>
+
+    <div class="card-detail" id="cardDetail">
+      <div class="detail-section">
+        <div class="detail-title">ABOUT YOU</div>
+        <div class="detail-text" id="aboutText">...</div>
+      </div>
+      <div class="detail-section">
+        <div class="detail-title">EVOLUTION LINE</div>
+        <div class="evolution-line" id="evoLine"></div>
+      </div>
+      <div class="detail-section">
+        <div class="detail-title">HOW TO LEVEL UP</div>
+        <div class="detail-text" id="levelupText">...</div>
+      </div>
+    </div>
+
+    <button class="retry-btn" id="retryBtn">🌒 もういちどえらぶ</button>
+  </div>
+</div>
+
+<script>
+const answers = {};
+
+document.querySelectorAll('.option-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const q = btn.dataset.q;
+    document.querySelectorAll(`[data-q="${q}"]`).forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    answers[q] = btn.dataset.v;
+    const allAnswered = answers['1'] && answers['2'] && answers['3'];
+    document.getElementById('generateBtn').disabled = !allAnswered;
+  });
+});
+
+document.getElementById('generateBtn').addEventListener('click', generateCard);
+document.getElementById('retryBtn').addEventListener('click', () => {
+  document.getElementById('cardWrapper').classList.remove('visible');
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  Object.keys(answers).forEach(k => delete answers[k]);
+  document.getElementById('generateBtn').disabled = true;
+  document.getElementById('quizSection').style.display = '';
+});
+
+const loadingMessages = [
+  '夜の民の記録を探しています…',
+  '星の配置を読んでいます…',
+  'あなたの特性が目覚めています…',
+  'カードが形になりつつあります…'
+];
+
+async function generateCard() {
+  document.getElementById('quizSection').style.display = 'none';
+  const loadingEl = document.getElementById('loading');
+  loadingEl.classList.add('active');
+
+  let msgIdx = 0;
+  const msgEl = document.getElementById('loadingMsg');
+  const msgInterval = setInterval(() => {
+    msgIdx = (msgIdx + 1) % loadingMessages.length;
+    msgEl.textContent = loadingMessages[msgIdx];
+  }, 1200);
+
+  const prompt = `あなたは「夜の民図鑑」というゲームのカードデザイナーです。
+ユーザーが3つの質問に答えました：
+- 今の気分: ${answers['1']}
+- 安心する時間: ${answers['2']}
+- 好きなもの: ${answers['3']}
+
+この答えをもとに、ユニークな夜の民キャラクターカードを日本語でJSONで返してください。
+キャラクターは「夜型・感覚が敏感・朝が苦手な子ども」を肯定的に描く「夜の民」シリーズです。
+すべてポジティブで、欠点を才能として描いてください。
+
+必ず以下のJSON形式のみで返してください（他の文章なし）：
+{
+  "number": "No.0XX（3桁の数字）",
+  "name": "カタカナのキャラ名（5〜8文字）",
+  "nameJp": "漢字かな混じりの別称（例：月読みの民）",
+  "types": ["タイプ1", "タイプ2"],
+  "emoji": "キャラのイメージに合う絵文字1つ",
+  "colorMain": "16進数カラーコード（例：#4488ff）",
+  "colorAccent": "16進数カラーコード（例：#aaccff）",
+  "classification": "〜のポケモン風の分類名（例：静けさの守り人ポケモン）",
+  "trait": "その子の特性の説明（ポジティブに、2〜3文、小学生でも読める言葉）",
+  "moves": [
+    {"name": "わざ名1", "desc": "効果の説明（短く）"},
+    {"name": "わざ名2", "desc": "効果の説明（短く）"},
+    {"name": "わざ名3", "desc": "効果の説明（短く）"}
+  ],
+  "evolutionHint": "進化するためのヒント（がんばらなくてOK、短く）",
+  "about": "このキャラが持つ才能や強みの詳しい説明（3〜4文、親や本人が読んで安心できる内容）",
+  "evolution": [
+    {"stage": "はじめのすがた", "emoji": "絵文字", "name": "キャラ名"},
+    {"stage": "2段階め", "emoji": "絵文字", "name": "キャラ名"},
+    {"stage": "覚醒すがた", "emoji": "絵文字", "name": "キャラ名"}
+  ],
+  "levelup": "レベルアップの方法（3つ、箇条書き風に、がんばらなくてOK）"
+}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    const data = await res.json();
+    const text = data.content.map(i => i.text || '').join('');
+    const clean = text.replace(/```json|```/g, '').trim();
+    const card = JSON.parse(clean);
+
+    clearInterval(msgInterval);
+    loadingEl.classList.remove('active');
+    renderCard(card);
+
+  } catch (e) {
+    clearInterval(msgInterval);
+    loadingEl.classList.remove('active');
+    // fallback
+    renderCard(getFallbackCard());
+  }
+}
+
+function getFallbackCard() {
+  return {
+    number: 'No.007',
+    name: 'ツキヨミン',
+    nameJp: '月読みの民',
+    types: ['ナイト', 'サイキック'],
+    emoji: '🌙',
+    colorMain: '#4466ee',
+    colorAccent: '#88aaff',
+    classification: 'しずけさのまもりポケモン',
+    trait: '夜に力がめざめる、特別なタイプ。光や音をとてもよく感じるため、静かな場所でこそ本当の力を発揮できる。',
+    moves: [
+      { name: 'ムーンサイレンス', desc: '周りを落ちつかせる' },
+      { name: 'スターセンス', desc: '小さな変化を感じ取る' },
+      { name: 'ナイトドリーム', desc: '自分だけの世界を作る' }
+    ],
+    evolutionHint: '⭐ 「これ好きかも」と思う瞬間が経験値になる',
+    about: 'このキャラは夜の静けさの中でだけ本当の力を発揮する、とてもまれな存在。昼の騒がしさが苦手なのは弱さではなく、感性のアンテナが強すぎるから。',
+    evolution: [
+      { stage: 'はじめのすがた', emoji: '🌙', name: 'ツキヨミン' },
+      { stage: '2段階め', emoji: '🌕', name: 'ツキヨルン' },
+      { stage: '覚醒すがた', emoji: '✨', name: 'ツキヨミア' }
+    ],
+    levelup: '• 好きな音を1つ見つける\n• 「今日はこれでいい」と1回思う\n• 夜に気になったことをメモする'
+  };
+}
+
+function renderCard(card) {
+  document.getElementById('cardNumber').textContent = card.number;
+  document.getElementById('cardName').textContent = card.name;
+  document.getElementById('cardNameJp').textContent = card.nameJp;
+  document.getElementById('cardEmoji').textContent = card.emoji;
+  document.getElementById('cardClassification').textContent = '▶ ' + card.classification;
+  document.getElementById('cardTrait').textContent = card.trait;
+  document.getElementById('evolutionHint').innerHTML = '<span>⭐ 進化のヒント：</span>' + card.evolutionHint.replace(/^⭐[^：]*：?/, '');
+
+  // type badges
+  const badgesEl = document.getElementById('typeBadges');
+  badgesEl.innerHTML = '';
+  const typeColors = ['#4488ff', '#9944ff', '#44ddcc', '#ff6699', '#ffcc44', '#44cc88'];
+  card.types.forEach((t, i) => {
+    const badge = document.createElement('span');
+    badge.className = 'type-badge';
+    badge.textContent = t;
+    badge.style.color = typeColors[i % typeColors.length];
+    badge.style.borderColor = typeColors[i % typeColors.length];
+    badgesEl.appendChild(badge);
+  });
+
+  // moves
+  const movesEl = document.getElementById('cardMoves');
+  movesEl.innerHTML = '';
+  card.moves.forEach((m, i) => {
+    const item = document.createElement('div');
+    item.className = 'move-item';
+    const colors = ['#4488ff', '#9944ff', '#44ddcc'];
+    item.innerHTML = `
+      <div class="move-dot" style="background:${colors[i % colors.length]}"></div>
+      <span class="move-name">${m.name}</span>
+      <span class="move-desc">${m.desc}</span>
+    `;
+    movesEl.appendChild(item);
+  });
+
+  // card art background
+  const canvas = document.getElementById('artCanvas');
+  const artEl = document.getElementById('cardArt');
+  artEl.style.background = `linear-gradient(135deg, ${card.colorMain}22, ${card.colorAccent}11)`;
+  drawArt(canvas, card.colorMain, card.colorAccent);
+
+  // detail
+  document.getElementById('aboutText').textContent = card.about;
+  document.getElementById('levelupText').innerHTML = card.levelup.replace(/\n/g, '<br>');
+
+  // evolution line
+  const evoEl = document.getElementById('evoLine');
+  evoEl.innerHTML = '';
+  card.evolution.forEach((stage, i) => {
+    const div = document.createElement('div');
+    div.className = 'evo-stage';
+    div.innerHTML = `
+      <span class="evo-emoji">${stage.emoji}</span>
+      <span class="evo-name">${stage.name}</span>
+      <span class="evo-stage-label">${stage.stage}</span>
+    `;
+    evoEl.appendChild(div);
+    if (i < card.evolution.length - 1) {
+      const arrow = document.createElement('div');
+      arrow.className = 'evo-arrow';
+      arrow.textContent = '→';
+      evoEl.appendChild(arrow);
+    }
+  });
+
+  document.getElementById('cardWrapper').classList.add('visible');
+  document.getElementById('mainCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function drawArt(canvas, colorMain, colorAccent) {
+  const W = canvas.offsetWidth || 300;
+  const H = canvas.offsetHeight || 160;
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // dark bg
+  ctx.fillStyle = '#0a0a20';
+  ctx.fillRect(0, 0, W, H);
+
+  // nebula glow
+  const g = ctx.createRadialGradient(W*0.5, H*0.5, 0, W*0.5, H*0.5, W*0.6);
+  g.addColorStop(0, colorMain + '44');
+  g.addColorStop(0.5, colorAccent + '22');
+  g.addColorStop(1, 'transparent');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, W, H);
+
+  // stars
+  for (let i = 0; i < 60; i++) {
+    const x = Math.random() * W;
+    const y = Math.random() * H;
+    const r = Math.random() * 1.2 + 0.3;
+    const alpha = Math.random() * 0.8 + 0.2;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+    ctx.fill();
+  }
+
+  // arc lines
+  ctx.strokeStyle = colorMain + '33';
+  ctx.lineWidth = 0.8;
+  for (let i = 0; i < 3; i++) {
+    ctx.beginPath();
+    ctx.arc(W * 0.5, H * 1.2, W * (0.3 + i * 0.2), Math.PI * 1.1, Math.PI * 1.9);
+    ctx.stroke();
+  }
+}
+</script>
+</body>
+</html>
