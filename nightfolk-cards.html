@@ -22,9 +22,9 @@
     --text-main: #d8d0c0;
     --text-dim: #8878a0;
   }
-
+ 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
+ 
   body {
     background: var(--night);
     color: var(--text-main);
@@ -32,8 +32,7 @@
     min-height: 100vh;
     overflow-x: hidden;
   }
-
-  /* starfield background */
+ 
   body::before {
     content: '';
     position: fixed;
@@ -52,7 +51,22 @@
     pointer-events: none;
     z-index: 0;
   }
-
+ 
+  .back-link {
+    display: block;
+    text-align: center;
+    padding: 14px;
+    font-size: 12px;
+    color: #475569;
+    text-decoration: none;
+    letter-spacing: 2px;
+    background: #080e1d;
+    border-bottom: 1px solid #1e293b;
+    position: relative;
+    z-index: 10;
+  }
+  .back-link:hover { color: #94a3b8; }
+ 
   .container {
     position: relative;
     z-index: 1;
@@ -60,12 +74,12 @@
     margin: 0 auto;
     padding: 2rem 1.5rem 4rem;
   }
-
+ 
   header {
     text-align: center;
     padding: 3rem 0 2.5rem;
   }
-
+ 
   header h1 {
     font-family: 'Cinzel Decorative', serif;
     font-size: clamp(1.4rem, 4vw, 2.2rem);
@@ -74,15 +88,14 @@
     text-shadow: 0 0 30px rgba(200,160,60,0.5), 0 0 60px rgba(200,160,60,0.2);
     margin-bottom: 0.5rem;
   }
-
+ 
   header p {
     font-family: 'Shippori Mincho', serif;
     color: var(--text-dim);
     font-size: 0.9rem;
     letter-spacing: 0.2em;
   }
-
-  /* Quiz section */
+ 
   .quiz-section {
     background: linear-gradient(135deg, rgba(20,20,50,0.8), rgba(15,15,40,0.9));
     border: 1px solid rgba(200,168,76,0.2);
@@ -92,7 +105,7 @@
     backdrop-filter: blur(10px);
     box-shadow: 0 0 40px rgba(0,0,0,0.5), inset 0 0 40px rgba(100,80,200,0.03);
   }
-
+ 
   .quiz-title {
     font-family: 'Shippori Mincho', serif;
     font-size: 1rem;
@@ -101,25 +114,25 @@
     margin-bottom: 1.5rem;
     text-align: center;
   }
-
+ 
   .question-block {
     margin-bottom: 1.5rem;
     animation: fadeIn 0.4s ease;
   }
-
+ 
   .question-text {
     font-size: 0.95rem;
     color: var(--moon);
     margin-bottom: 0.8rem;
     line-height: 1.7;
   }
-
+ 
   .options {
     display: flex;
     flex-wrap: wrap;
     gap: 0.6rem;
   }
-
+ 
   .option-btn {
     background: rgba(255,255,255,0.04);
     border: 1px solid rgba(200,168,76,0.25);
@@ -132,7 +145,7 @@
     transition: all 0.25s ease;
     letter-spacing: 0.05em;
   }
-
+ 
   .option-btn:hover {
     background: rgba(200,168,76,0.12);
     border-color: var(--gold);
@@ -140,14 +153,14 @@
     transform: translateY(-1px);
     box-shadow: 0 4px 15px rgba(200,168,76,0.15);
   }
-
+ 
   .option-btn.selected {
     background: rgba(200,168,76,0.18);
     border-color: var(--gold-light);
     color: var(--gold-light);
     box-shadow: 0 0 12px rgba(200,168,76,0.2);
   }
-
+ 
   .generate-btn {
     display: block;
     width: 100%;
@@ -163,39 +176,38 @@
     cursor: pointer;
     transition: all 0.3s ease;
   }
-
+ 
   .generate-btn:hover:not(:disabled) {
     background: linear-gradient(135deg, rgba(200,168,76,0.3), rgba(200,168,76,0.15));
     box-shadow: 0 0 25px rgba(200,168,76,0.3);
     transform: translateY(-1px);
   }
-
+ 
   .generate-btn:disabled {
     opacity: 0.4;
     cursor: not-allowed;
   }
-
-  /* Loading */
+ 
   .loading {
     text-align: center;
     padding: 2rem;
     display: none;
   }
-
+ 
   .loading.active { display: block; }
-
+ 
   .moon-spinner {
     font-size: 2.5rem;
     display: inline-block;
     animation: moonSpin 1.5s linear infinite;
   }
-
+ 
   @keyframes moonSpin {
     0% { transform: rotate(0deg) scale(1); }
     50% { transform: rotate(180deg) scale(1.2); }
     100% { transform: rotate(360deg) scale(1); }
   }
-
+ 
   .loading p {
     color: var(--text-dim);
     font-size: 0.85rem;
@@ -203,25 +215,24 @@
     letter-spacing: 0.1em;
     animation: pulse 1.5s ease-in-out infinite;
   }
-
+ 
   @keyframes pulse {
     0%, 100% { opacity: 0.5; }
     50% { opacity: 1; }
   }
-
-  /* Card */
+ 
   .card-wrapper {
     display: none;
     animation: cardReveal 0.8s ease forwards;
   }
-
+ 
   .card-wrapper.visible { display: block; }
-
+ 
   @keyframes cardReveal {
     from { opacity: 0; transform: translateY(20px) scale(0.95); }
     to   { opacity: 1; transform: translateY(0) scale(1); }
   }
-
+ 
   .card {
     width: min(340px, 90vw);
     margin: 0 auto 2rem;
@@ -230,24 +241,14 @@
     position: relative;
     box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(200,168,76,0.3);
   }
-
+ 
   .card-inner {
     background: linear-gradient(160deg, #0e0e28 0%, #181836 40%, #0e0e28 100%);
     padding: 1.5rem 1.3rem 1.3rem;
     position: relative;
     min-height: 480px;
   }
-
-  .card-border-glow {
-    position: absolute;
-    inset: 0;
-    border-radius: 20px;
-    pointer-events: none;
-    border: 2px solid transparent;
-    background: linear-gradient(#0e0e28, #0e0e28) padding-box,
-                var(--card-gradient) border-box;
-  }
-
+ 
   .card-corner {
     position: absolute;
     width: 18px;
@@ -258,7 +259,7 @@
   .card-corner.tr { top: 8px; right: 8px; border-top: 1.5px solid var(--gold); border-right: 1.5px solid var(--gold); }
   .card-corner.bl { bottom: 8px; left: 8px; border-bottom: 1.5px solid var(--gold); border-left: 1.5px solid var(--gold); }
   .card-corner.br { bottom: 8px; right: 8px; border-bottom: 1.5px solid var(--gold); border-right: 1.5px solid var(--gold); }
-
+ 
   .card-number {
     font-family: 'Cinzel Decorative', serif;
     font-size: 0.6rem;
@@ -266,7 +267,7 @@
     letter-spacing: 0.2em;
     margin-bottom: 0.4rem;
   }
-
+ 
   .card-name {
     font-family: 'Cinzel Decorative', serif;
     font-size: 1.3rem;
@@ -275,7 +276,7 @@
     margin-bottom: 0.2rem;
     letter-spacing: 0.05em;
   }
-
+ 
   .card-name-jp {
     font-family: 'Shippori Mincho', serif;
     font-size: 0.75rem;
@@ -283,14 +284,14 @@
     letter-spacing: 0.2em;
     margin-bottom: 0.8rem;
   }
-
+ 
   .type-badges {
     display: flex;
     gap: 0.4rem;
     margin-bottom: 0.9rem;
     flex-wrap: wrap;
   }
-
+ 
   .type-badge {
     font-size: 0.65rem;
     padding: 0.2rem 0.7rem;
@@ -299,8 +300,7 @@
     letter-spacing: 0.1em;
     border: 1px solid currentColor;
   }
-
-  /* Art area */
+ 
   .card-art {
     width: 100%;
     height: 160px;
@@ -312,14 +312,14 @@
     align-items: center;
     justify-content: center;
   }
-
+ 
   .card-art canvas {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
   }
-
+ 
   .card-emoji {
     font-size: 4rem;
     position: relative;
@@ -327,12 +327,12 @@
     filter: drop-shadow(0 0 20px currentColor);
     animation: floatEmoji 3s ease-in-out infinite;
   }
-
+ 
   @keyframes floatEmoji {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-8px); }
   }
-
+ 
   .card-classification {
     font-size: 0.65rem;
     color: var(--text-dim);
@@ -340,7 +340,7 @@
     margin-bottom: 0.7rem;
     font-family: 'Shippori Mincho', serif;
   }
-
+ 
   .card-trait {
     font-size: 0.78rem;
     color: var(--text-main);
@@ -350,14 +350,14 @@
     border-left: 2px solid rgba(200,168,76,0.3);
     padding-left: 0.7rem;
   }
-
+ 
   .card-moves {
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
     margin-bottom: 0.8rem;
   }
-
+ 
   .move-item {
     display: flex;
     align-items: center;
@@ -365,24 +365,22 @@
     font-size: 0.72rem;
     font-family: 'Shippori Mincho', serif;
   }
-
+ 
   .move-dot {
     width: 5px;
     height: 5px;
     border-radius: 50%;
     flex-shrink: 0;
   }
-
+ 
   .move-name {
     color: var(--gold-light);
     font-weight: 600;
     min-width: 100px;
   }
-
-  .move-desc {
-    color: var(--text-dim);
-  }
-
+ 
+  .move-desc { color: var(--text-dim); }
+ 
   .evolution-hint {
     background: rgba(200,168,76,0.06);
     border: 1px solid rgba(200,168,76,0.15);
@@ -393,12 +391,9 @@
     font-family: 'Shippori Mincho', serif;
     line-height: 1.6;
   }
-
-  .evolution-hint span {
-    color: var(--gold);
-  }
-
-  /* Detail section below card */
+ 
+  .evolution-hint span { color: var(--gold); }
+ 
   .card-detail {
     background: linear-gradient(135deg, rgba(20,20,50,0.8), rgba(15,15,40,0.9));
     border: 1px solid rgba(200,168,76,0.15);
@@ -406,11 +401,9 @@
     padding: 1.8rem;
     margin-bottom: 1.5rem;
   }
-
-  .detail-section {
-    margin-bottom: 1.3rem;
-  }
-
+ 
+  .detail-section { margin-bottom: 1.3rem; }
+ 
   .detail-title {
     font-family: 'Cinzel Decorative', serif;
     font-size: 0.65rem;
@@ -420,27 +413,27 @@
     padding-bottom: 0.4rem;
     border-bottom: 1px solid rgba(200,168,76,0.15);
   }
-
+ 
   .detail-text {
     font-size: 0.85rem;
     line-height: 1.9;
     color: var(--text-main);
     font-family: 'Shippori Mincho', serif;
   }
-
+ 
   .evolution-line {
     display: flex;
     align-items: center;
     gap: 0.8rem;
     flex-wrap: wrap;
   }
-
+ 
   .evo-stage {
     text-align: center;
     flex: 1;
     min-width: 80px;
   }
-
+ 
   .evo-emoji { font-size: 1.8rem; display: block; margin-bottom: 0.3rem; }
   .evo-name {
     font-family: 'Shippori Mincho', serif;
@@ -453,14 +446,14 @@
     display: block;
     margin-top: 0.15rem;
   }
-
+ 
   .evo-arrow {
     color: var(--gold);
     opacity: 0.5;
     font-size: 1.2rem;
     flex-shrink: 0;
   }
-
+ 
   .retry-btn {
     display: block;
     width: min(340px, 90vw);
@@ -476,12 +469,12 @@
     cursor: pointer;
     transition: all 0.3s ease;
   }
-
+ 
   .retry-btn:hover {
     border-color: var(--gold);
     color: var(--gold-light);
   }
-
+ 
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(8px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -489,16 +482,15 @@
 </style>
 </head>
 <body>
+<a class="back-link" href="https://thth1255079.github.io/tokko/">← 岩戸ログへ戻る</a>
 <div class="container">
   <header>
     <h1>🌙 夜の民図鑑</h1>
     <p>あなたの特性を知ろう</p>
-
   </header>
-
+ 
   <div class="quiz-section" id="quizSection">
     <div class="quiz-title">🔮 ３つだけ、こたえてね</div>
-
     <div class="question-block">
       <div class="question-text">① いま、気分に近いのはどれ？</div>
       <div class="options" id="q1">
@@ -510,7 +502,6 @@
         <button class="option-btn" data-q="1" data-v="どきどき">どきどき</button>
       </div>
     </div>
-
     <div class="question-block">
       <div class="question-text">② 安心するのはどの時間？</div>
       <div class="options" id="q2">
@@ -522,7 +513,6 @@
         <button class="option-btn" data-q="2" data-v="いつでも">いつでも</button>
       </div>
     </div>
-
     <div class="question-block">
       <div class="question-text">③ 好きなもの、１つだけ言ってみて</div>
       <div class="options" id="q3">
@@ -534,15 +524,14 @@
         <button class="option-btn" data-q="3" data-v="動物・自然">動物・自然</button>
       </div>
     </div>
-
     <button class="generate-btn" id="generateBtn" disabled>🌙 カードをひらく</button>
   </div>
-
+ 
   <div class="loading" id="loading">
     <div class="moon-spinner">🌙</div>
     <p id="loadingMsg">夜の民の記録を探しています…</p>
   </div>
-
+ 
   <div class="card-wrapper" id="cardWrapper">
     <div class="card" id="mainCard">
       <div class="card-inner" id="cardInner">
@@ -564,7 +553,6 @@
         <div class="evolution-hint" id="evolutionHint">...</div>
       </div>
     </div>
-
     <div class="card-detail" id="cardDetail">
       <div class="detail-section">
         <div class="detail-title">ABOUT YOU</div>
@@ -579,14 +567,13 @@
         <div class="detail-text" id="levelupText">...</div>
       </div>
     </div>
-
     <button class="retry-btn" id="retryBtn">🌒 もういちどえらぶ</button>
   </div>
 </div>
-
+ 
 <script>
 const answers = {};
-
+ 
 document.querySelectorAll('.option-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const q = btn.dataset.q;
@@ -597,7 +584,7 @@ document.querySelectorAll('.option-btn').forEach(btn => {
     document.getElementById('generateBtn').disabled = !allAnswered;
   });
 });
-
+ 
 document.getElementById('generateBtn').addEventListener('click', generateCard);
 document.getElementById('retryBtn').addEventListener('click', () => {
   document.getElementById('cardWrapper').classList.remove('visible');
@@ -606,36 +593,36 @@ document.getElementById('retryBtn').addEventListener('click', () => {
   document.getElementById('generateBtn').disabled = true;
   document.getElementById('quizSection').style.display = '';
 });
-
+ 
 const loadingMessages = [
   '夜の民の記録を探しています…',
   '星の配置を読んでいます…',
   'あなたの特性が目覚めています…',
   'カードが形になりつつあります…'
 ];
-
+ 
 async function generateCard() {
   document.getElementById('quizSection').style.display = 'none';
   const loadingEl = document.getElementById('loading');
   loadingEl.classList.add('active');
-
+ 
   let msgIdx = 0;
   const msgEl = document.getElementById('loadingMsg');
   const msgInterval = setInterval(() => {
     msgIdx = (msgIdx + 1) % loadingMessages.length;
     msgEl.textContent = loadingMessages[msgIdx];
   }, 1200);
-
+ 
   const prompt = `あなたは「夜の民図鑑」というゲームのカードデザイナーです。
 ユーザーが3つの質問に答えました：
 - 今の気分: ${answers['1']}
 - 安心する時間: ${answers['2']}
 - 好きなもの: ${answers['3']}
-
+ 
 この答えをもとに、ユニークな夜の民キャラクターカードを日本語でJSONで返してください。
 キャラクターは「夜型・感覚が敏感・朝が苦手な子ども」を肯定的に描く「夜の民」シリーズです。
 すべてポジティブで、欠点を才能として描いてください。
-
+ 
 必ず以下のJSON形式のみで返してください（他の文章なし）：
 {
   "number": "No.0XX（3桁の数字）",
@@ -661,7 +648,7 @@ async function generateCard() {
   ],
   "levelup": "レベルアップの方法（3つ、箇条書き風に、がんばらなくてOK）"
 }`;
-
+ 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -672,24 +659,23 @@ async function generateCard() {
         messages: [{ role: 'user', content: prompt }]
       })
     });
-
+ 
     const data = await res.json();
     const text = data.content.map(i => i.text || '').join('');
     const clean = text.replace(/```json|```/g, '').trim();
     const card = JSON.parse(clean);
-
+ 
     clearInterval(msgInterval);
     loadingEl.classList.remove('active');
     renderCard(card);
-
+ 
   } catch (e) {
     clearInterval(msgInterval);
     loadingEl.classList.remove('active');
-    // fallback
     renderCard(getFallbackCard());
   }
 }
-
+ 
 function getFallbackCard() {
   return {
     number: 'No.007',
@@ -716,7 +702,7 @@ function getFallbackCard() {
     levelup: '• 好きな音を1つ見つける\n• 「今日はこれでいい」と1回思う\n• 夜に気になったことをメモする'
   };
 }
-
+ 
 function renderCard(card) {
   document.getElementById('cardNumber').textContent = card.number;
   document.getElementById('cardName').textContent = card.name;
@@ -725,8 +711,7 @@ function renderCard(card) {
   document.getElementById('cardClassification').textContent = '▶ ' + card.classification;
   document.getElementById('cardTrait').textContent = card.trait;
   document.getElementById('evolutionHint').innerHTML = '<span>⭐ 進化のヒント：</span>' + card.evolutionHint.replace(/^⭐[^：]*：?/, '');
-
-  // type badges
+ 
   const badgesEl = document.getElementById('typeBadges');
   badgesEl.innerHTML = '';
   const typeColors = ['#4488ff', '#9944ff', '#44ddcc', '#ff6699', '#ffcc44', '#44cc88'];
@@ -738,8 +723,7 @@ function renderCard(card) {
     badge.style.borderColor = typeColors[i % typeColors.length];
     badgesEl.appendChild(badge);
   });
-
-  // moves
+ 
   const movesEl = document.getElementById('cardMoves');
   movesEl.innerHTML = '';
   card.moves.forEach((m, i) => {
@@ -753,18 +737,15 @@ function renderCard(card) {
     `;
     movesEl.appendChild(item);
   });
-
-  // card art background
+ 
   const canvas = document.getElementById('artCanvas');
   const artEl = document.getElementById('cardArt');
   artEl.style.background = `linear-gradient(135deg, ${card.colorMain}22, ${card.colorAccent}11)`;
   drawArt(canvas, card.colorMain, card.colorAccent);
-
-  // detail
+ 
   document.getElementById('aboutText').textContent = card.about;
   document.getElementById('levelupText').innerHTML = card.levelup.replace(/\n/g, '<br>');
-
-  // evolution line
+ 
   const evoEl = document.getElementById('evoLine');
   evoEl.innerHTML = '';
   card.evolution.forEach((stage, i) => {
@@ -783,31 +764,28 @@ function renderCard(card) {
       evoEl.appendChild(arrow);
     }
   });
-
+ 
   document.getElementById('cardWrapper').classList.add('visible');
   document.getElementById('mainCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-
+ 
 function drawArt(canvas, colorMain, colorAccent) {
   const W = canvas.offsetWidth || 300;
   const H = canvas.offsetHeight || 160;
   canvas.width = W;
   canvas.height = H;
   const ctx = canvas.getContext('2d');
-
-  // dark bg
+ 
   ctx.fillStyle = '#0a0a20';
   ctx.fillRect(0, 0, W, H);
-
-  // nebula glow
+ 
   const g = ctx.createRadialGradient(W*0.5, H*0.5, 0, W*0.5, H*0.5, W*0.6);
   g.addColorStop(0, colorMain + '44');
   g.addColorStop(0.5, colorAccent + '22');
   g.addColorStop(1, 'transparent');
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, W, H);
-
-  // stars
+ 
   for (let i = 0; i < 60; i++) {
     const x = Math.random() * W;
     const y = Math.random() * H;
@@ -818,8 +796,7 @@ function drawArt(canvas, colorMain, colorAccent) {
     ctx.fillStyle = `rgba(255,255,255,${alpha})`;
     ctx.fill();
   }
-
-  // arc lines
+ 
   ctx.strokeStyle = colorMain + '33';
   ctx.lineWidth = 0.8;
   for (let i = 0; i < 3; i++) {
@@ -829,6 +806,5 @@ function drawArt(canvas, colorMain, colorAccent) {
   }
 }
 </script>
-    <a href="index.html" style="display:block;text-align:center;padding:14px;font-size:12px;color:#475569;text-decoration:none;letter-spacing:2px;background:#080e1d;border-bottom:1px solid #1e293b;">← 岩戸ログへ戻る</a>
 </body>
 </html>
